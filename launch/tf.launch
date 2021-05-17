@@ -5,7 +5,7 @@
   <arg name="camera_name" default="/camera_rect" />
   <arg name="camera_frame" default="camera" />
   <arg name="image_topic" default="image_rect" />
-  <arg name="camera_device" default="/dev/video2" />
+  <arg name="camera_device" default="/dev/video0" />
 
   <include file="$(find colab_reachy_camera)/launch/camera_image_and_info.launch">
     <arg name="cam_dev" value="$(arg camera_device)"/>
