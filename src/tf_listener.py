@@ -1,32 +1,33 @@
 #!/usr/bin/env python3
-import sys
-import tf
-from apriltag_ros.msg import AprilTagDetectionArray
+import roslib
 import rospy
+import math
+import tf
+import geometry_msgs.msg
+import turtlesim.srv
 
-def tf_handle(msgs):
+if __name__ == '__main__':
+    rospy.init_node('tf_listener')
+    listener = tf.TransformListener()
+    # rospy.wait_for_service('spawn')
+    # spawner = rospy.ServiceProxy('spawn', turtlesim.srv.Spawn)
+    # spawner(4, 2, 0, 'turtle2')
+    # turtle_vel = rospy.Publisher('turtle2/cmd_vel', geometry_msgs.msg.Twist,queue_size=1)
+    rate = rospy.Rate(10.0)
+    while not rospy.is_shutdown():
+        try:
+            # transform from the cube_base_link to the camera frame
+            (trans,rot) = listener.lookupTransform('/camera', '/cube_base_link', rospy.Time(0))
+            rospy.loginfo(rot)
+            rospy.loginfo(trans)
+        except (tf.LookupException, tf.ConnectivityException, tf.ExtrapolationException):
+            continue
 
-    for msg in msgs.detections:
-        msg.pose.header.frame_id = "april_tag" + str(msg.id[0])
-        rospy.loginfo(msg)
-        
-        br = tf.TransformBroadcaster()
-        br.sendTransform((msg.pose.pose.pose.position.x,
-                          msg.pose.pose.pose.position.y,
-                          msg.pose.pose.pose.position.z),
-                         (msg.pose.pose.pose.orientation.x,
-                          msg.pose.pose.pose.orientation.y,
-                          msg.pose.pose.pose.orientation.z,
-                          msg.pose.pose.pose.orientation.w),
-                          rospy.Time.now(),
-                          msg.pose.header.frame_id,
-                          "camera")
-    
-if __name__ == "__main__":  
-    try:
-        rospy.init_node('tf_listener')
-        rospy.Subscriber('/tag_detections',AprilTagDetectionArray,tf_handle)
-        rospy.spin()
+    # angular = 4 * math.atan2(trans[1], trans[0])
+    # linear = 0.5 * math.sqrt(trans[0] ** 2 + trans[1] ** 2)
+    # cmd = geometry_msgs.msg.Twist()
+    # cmd.linear.x = linear
+    # cmd.angular.z = angular
+    # turtle_vel.publish(cmd)
 
-    except rospy.ROSInterruptException:
-        pass
+    rate.sleep()

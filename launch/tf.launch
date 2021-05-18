@@ -11,6 +11,8 @@
     <arg name="cam_dev" value="$(arg camera_device)"/>
   </include>
 
+  <include file="$(find colab_reachy_object_urdf)/launch/display.launch">
+  </include>
 
   <!-- Set parameters -->
   <rosparam command="load" file="$(find colab_reachy_tf)/config/settings.yaml" ns="$(arg node_namespace)"/>
@@ -26,7 +28,7 @@
     <param name="publish_tf" type="bool" value='false' />
   </node>
 
-  <node pkg="colab_reachy_tf" type="tf_listener.py" name="tf_listener" />
+  <node pkg="colab_reachy_tf" type="tag_detection_to_tf.py" name="tag_detection_to_tf" />
 
   <node pkg="rviz" type="rviz" name="rviz" args="-d $(find colab_reachy_tf)/rviz/default.rviz" />
 </launch>
