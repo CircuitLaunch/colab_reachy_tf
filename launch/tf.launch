@@ -5,7 +5,7 @@
   <arg name="camera_name" default="/camera_rect" />
   <arg name="camera_frame" default="camera" />
   <arg name="image_topic" default="image_rect" />
-  <arg name="camera_device" default="/dev/video0" />
+  <arg name="camera_device" default="/dev/video2" />
 
   <include file="$(find colab_reachy_camera)/launch/camera_image_and_info.launch">
     <arg name="cam_dev" value="$(arg camera_device)"/>
@@ -30,5 +30,5 @@
 
   <node pkg="colab_reachy_tf" type="tag_detection_to_tf.py" name="tag_detection_to_tf" />
 
-  <node pkg="rviz" type="rviz" name="rviz" args="-d $(find colab_reachy_tf)/rviz/default.rviz" />
+  <!-- <node pkg="rviz" type="rviz" name="rviz" args="-d $(find colab_reachy_tf)/rviz/default.rviz" /> -->
 </launch>
