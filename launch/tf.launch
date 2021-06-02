@@ -8,9 +8,9 @@
   <arg name="use_rviz" default="true" />
   <arg name="node_namespace" default="apriltag_ros_continuous_node" />
 
-  <!-- <include file="$(find colab_reachy_camera)/launch/camera_image_and_info.launch">
+  <include file="$(find colab_reachy_camera)/launch/camera_image_and_info.launch">
     <arg name="cam_dev" value="$(arg camera_device)"/>
-  </include> -->
+  </include>
 
   <!--  -->
   <!-- <include file="$(find colab_reachy_object_urdf)/launch/display.launch">
@@ -42,7 +42,7 @@
   <!-- <node pkg="tf" type="static_transform_publisher" name="apriltag_4" args="0.05 0 1 0 0 0 1 pedestal apriltag_4  100" />  -->
 
   <!-- Simulation -->
-  <node pkg="tf" type="static_transform_publisher" name="apriltag_4" args="0.05 0 1 0 0 0 1 pedestal apriltag_4  100" /> 
+  <node pkg="tf" type="static_transform_publisher" name="apriltag_4" args="-0.05 0 -1 0 0 0 1  apriltag_4 pedestal  100" /> 
 
 
   <node pkg="rviz" type="rviz" name="rviz" args="-d $(find colab_reachy_tf)/rviz/default.rviz" if="$(arg use_rviz)"/>
