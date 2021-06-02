@@ -1,13 +1,8 @@
 <launch>
 
-  <arg name="launch_prefix" default="" /> <!-- set to value="gdbserver localhost:10000" for remote debugging -->
-  <arg name="node_namespace" default="apriltag_ros_continuous_node" />
-  <arg name="camera_name" default="/camera_rect" />
-  <arg name="camera_frame" default="camera" />
-  <arg name="image_topic" default="image_rect" />
   <arg name="camera_device" default="/dev/video2" />
-
   <arg name="use_rviz" default="true" />
+  <arg name="node_namespace" default="apriltag_ros_continuous_node" />
 
   <!-- <include file="$(find colab_reachy_camera)/launch/camera_image_and_info.launch">
     <arg name="cam_dev" value="$(arg camera_device)"/>
@@ -16,6 +11,8 @@
   <!--  -->
   <!-- <include file="$(find colab_reachy_object_urdf)/launch/display.launch">
   </include> -->
+  <include file="$(find colab_reachy_object_urdf)/launch/display.launch"/>
+  <include file="$(find apriltag_ros)/launch/continuous_detection.launch"/>
 
   <!-- Set parameters -->
   <rosparam command="load" file="$(find colab_reachy_tf)/config/settings_alternative.yaml" ns="$(arg node_namespace)"/>
@@ -32,6 +29,9 @@
   </node>
 
   <!-- publish the pose to the /tf topic after subscribing to /tag_detection topic. Need this to add the time stamp -->
+  <!-- Set the apriltag publish_tf to False so that it's not duplicating /tf from /tag_detection topic-->
+  <!-- <param name="apriltag_ros_continuous_node/publish_tf" type="bool" value='false' /> -->
+
   <node pkg="colab_reachy_tf" type="tag_detection_to_tf.py" name="tag_detection_to_tf" />
   
   <!-- Sets the static tf from the pedestal of reachy to the apriltag -->
