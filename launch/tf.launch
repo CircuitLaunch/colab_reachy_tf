@@ -9,12 +9,13 @@
 
   <arg name="use_rviz" default="true" />
 
-  <include file="$(find colab_reachy_camera)/launch/camera_image_and_info.launch">
+  <!-- <include file="$(find colab_reachy_camera)/launch/camera_image_and_info.launch">
     <arg name="cam_dev" value="$(arg camera_device)"/>
-  </include>
+  </include> -->
 
-  <include file="$(find colab_reachy_object_urdf)/launch/display.launch">
-  </include>
+  <!--  -->
+  <!-- <include file="$(find colab_reachy_object_urdf)/launch/display.launch">
+  </include> -->
 
   <!-- Set parameters -->
   <rosparam command="load" file="$(find colab_reachy_tf)/config/settings_alternative.yaml" ns="$(arg node_namespace)"/>
@@ -28,11 +29,17 @@
     <param name="camera_frame" type="str" value="$(arg camera_frame)" />
     <param name="publish_tag_detections_image" type="bool" value="true" />
     <param name="publish_tf" type="bool" value='false' />
-    
   </node>
 
-
+  <!-- publish the pose to the /tf topic after subscribing to /tag_detection topic. Need this to add the time stamp -->
   <node pkg="colab_reachy_tf" type="tag_detection_to_tf.py" name="tag_detection_to_tf" />
+  
+  <!-- Sets the static tf from the pedestal of reachy to the apriltag -->
+  <!-- <node pkg="tf" type="static_transform_publisher" name="apriltag_4" args="0.05 0 1 0 0 0 1 pedestal apriltag_4  100" />  -->
+
+  <!-- Simulation -->
+  <node pkg="tf" type="static_transform_publisher" name="apriltag_4" args="0.05 0 1 0 0 0 1 pedestal apriltag_4  100" /> 
+
 
   <node pkg="rviz" type="rviz" name="rviz" args="-d $(find colab_reachy_tf)/rviz/default.rviz" if="$(arg use_rviz)"/>
 </launch>

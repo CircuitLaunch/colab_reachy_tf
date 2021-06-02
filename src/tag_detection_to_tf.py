@@ -7,7 +7,10 @@ import rospy
 def tf_handle(msgs):
 
     for msg in msgs.detections:
-        msg.pose.header.frame_id = "apriltag_" + str(msg.id[0])
+        # msg.pose.header.frame_id = "apriltag_" + str(msg.id[0])
+        # simulation
+        msg.pose.header.frame_id = str(msg.id[0])
+
         rospy.loginfo(msg)
         
         br = tf.TransformBroadcaster()
@@ -20,7 +23,7 @@ def tf_handle(msgs):
                           msg.pose.pose.pose.orientation.w),
                           rospy.Time.now(),
                           msg.pose.header.frame_id,
-                          "camera")
+                          "camera_link_optical")
     
 if __name__ == "__main__":  
     try:
